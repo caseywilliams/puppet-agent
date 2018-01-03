@@ -81,4 +81,3 @@ component 'puppet-runtime' do |pkg, settings, platform|
     install_command
   end
 end
-
