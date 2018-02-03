@@ -54,8 +54,6 @@ project "puppet-agent" do |proj|
     proj.setting(:pxp_root, File.join(proj.install_root, "pxp-agent"))
     proj.setting(:service_dir, File.join(proj.install_root, "service"))
     proj.setting(:windows_tools, File.join(proj.install_root, "sys/tools/bin"))
-    proj.setting(:ruby_dir, File.join(proj.install_root, "sys/ruby"))
-    proj.setting(:ruby_bindir, File.join(proj.ruby_dir, "bin"))
   else
     proj.setting(:install_root, "/opt/puppetlabs")
     if platform.is_eos?
@@ -88,10 +86,14 @@ project "puppet-agent" do |proj|
     proj.setting(:host_ruby, File.join(proj.ruby_bindir, "ruby.exe"))
     proj.setting(:host_gem, File.join(proj.ruby_bindir, "gem.bat"))
     proj.setting(:libdir, File.join(proj.ruby_dir, "lib"))
+    proj.setting(:ruby_dir, File.join(proj.install_root, 'sys/ruby'))
+    proj.setting(:ruby_bindir, File.join(proj.ruby_dir, 'bin'))
   else
     proj.setting(:host_ruby, File.join(proj.bindir, "ruby"))
     proj.setting(:host_gem, File.join(proj.bindir, "gem"))
     proj.setting(:libdir, File.join(proj.prefix, "lib"))
+    proj.setting(:ruby_dir, File.join(proj.prefix))
+    proj.setting(:ruby_bindir, File.join(proj.ruby_dir, 'bin'))
   end
 
   proj.setting(:ruby_version, "2.1.9")
