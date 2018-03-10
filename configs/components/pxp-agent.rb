@@ -10,9 +10,10 @@ component "pxp-agent" do |pkg, settings, platform|
     pkg.environment "PATH", "#{settings[:bindir]}:/opt/pl-build-tools/bin:$(PATH)"
   end
 
-  pkg.build_requires "puppet-runtime" # Provides vendor openssl
+  pkg.build_requires "puppet-runtime" # Provides vendor openssl, if used
 
-  unless settings[:vendor_openssl]
+  if settings[:system_openssl]
+    # Install the system openssl if the vendored version is not used
     pkg.build_requires 'openssl-devel'
   end
 

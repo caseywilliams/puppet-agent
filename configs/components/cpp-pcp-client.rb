@@ -13,7 +13,7 @@ component "cpp-pcp-client" do |pkg, settings, platform|
 
   pkg.build_requires "puppet-runtime" # Provides openssl
 
-  unless settings[:vendor_openssl]
+  if settings[:system_openssl]
     pkg.build_requires 'openssl-devel'
   end
 

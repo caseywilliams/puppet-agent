@@ -14,9 +14,10 @@ component "facter" do |pkg, settings, platform|
 
   pkg.replaces 'pe-facter'
 
-  pkg.build_requires 'puppet-runtime' # Provides openssl, ruby, augeas, curl
+  pkg.build_requires "puppet-runtime" # Provides ruby, augeas, curl, and vendor openssl, if used
 
-  unless settings[:vendor_openssl]
+  if settings[:system_openssl]
+    # Install the system openssl if the vendored version is not used
     pkg.build_requires 'openssl-devel'
   end
 

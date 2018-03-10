@@ -75,6 +75,10 @@ project "puppet-agent" do |proj|
   # Set package version, for use by Facter in creating the AIO_AGENT_VERSION fact.
   proj.setting(:package_version, proj.get_version)
 
+  if platform.name =~ /^redhat-fips-7-.*/
+    proj.setting(:system_openssl, true)
+  end
+
   # First our stuff
   proj.component "puppet"
   proj.component "facter"
