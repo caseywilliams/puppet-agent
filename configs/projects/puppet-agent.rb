@@ -61,6 +61,13 @@ project "puppet-agent" do |proj|
   proj.setting(:puppet_configdir, File.join(proj.sysconfdir, 'puppet'))
   proj.setting(:puppet_codedir, File.join(proj.sysconfdir, 'code'))
 
+  # Target directory for vendor modules
+  proj.setting(:module_vendordir, File.join(proj.prefix, 'vendor_modules'))
+
+  # Module components use _base-module.rb to fetch metadata from the forge:
+  proj.setting(:forge_api_baseurl, "https://forgeapi.puppetlabs.com")
+  proj.setting(:forge_api_version, "v3")
+
   proj.description "The Puppet Agent package contains all of the elements needed to run puppet, including ruby, facter, hiera and mcollective."
   proj.version_from_git
   proj.write_version_file File.join(proj.prefix, 'VERSION')
@@ -117,6 +124,10 @@ project "puppet-agent" do |proj|
   if platform.is_macos?
     proj.component "cfpropertylist"
   end
+
+  # Vendored modules
+  proj.component "module-puppetlabs-maillist_core"
+  proj.component "module-puppetlabs-mailalias_core"
 
   proj.directory proj.install_root
   proj.directory proj.prefix
