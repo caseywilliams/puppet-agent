@@ -1,6 +1,3 @@
-require 'puppet/acceptance/temp_file_utils'
-require 'puppet/acceptance/common_utils'
-
 VENDOR_MODULES = "/opt/puppetlabs/puppet/vendor_modules/"
 
 test_name "PA-1998: Validate that vendored modules are installed" do
