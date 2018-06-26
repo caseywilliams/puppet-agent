@@ -87,6 +87,7 @@ component "leatherman" do |pkg, settings, platform|
         -DLEATHERMAN_SHARED=TRUE \
         -DBOOST_INCLUDEDIR=#{settings[:libdir]} \
         #{special_flags} \
+        -DBoost_DEBUG=ON -DBoost_DETAILED_FAILURE_MESSAGE=ON \
         ."]
   end
 
