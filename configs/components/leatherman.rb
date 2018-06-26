@@ -16,7 +16,7 @@ component "leatherman" do |pkg, settings, platform|
     pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/aix/#{platform.os_version}/ppc/pl-cmake-3.2.3-2.aix#{platform.os_version}.ppc.rpm"
     pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/aix/#{platform.os_version}/ppc/pl-gettext-0.19.8-2.aix#{platform.os_version}.ppc.rpm"
   elsif platform.is_windows?
-    pkg.build_requires "cmake"
+    # pkg.build_requires "cmake"
     pkg.build_requires "pl-toolchain-#{platform.architecture}"
     pkg.build_requires "pl-gettext-#{platform.architecture}"
   else
@@ -56,7 +56,8 @@ component "leatherman" do |pkg, settings, platform|
     pkg.environment "PATH", "$(shell cygpath -u #{settings[:gcc_bindir]}):$(shell cygpath -u #{settings[:ruby_bindir]}):/cygdrive/c/Windows/system32:/cygdrive/c/Windows:/cygdrive/c/Windows/System32/WindowsPowerShell/v1.0"
     pkg.environment "CYGWIN", settings[:cygwin]
 
-    cmake = "C:/ProgramData/chocolatey/bin/cmake.exe -G \"MinGW Makefiles\""
+    # cmake = "C:/ProgramData/chocolatey/bin/cmake.exe -G \"MinGW Makefiles\""
+    cmake = "\"C:/Program Files/CMake/bin/cmake.exe\" -G \"MinGW Makefiles\""
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:tools_root]}/pl-build-toolchain.cmake"
 
     # Use environment variable set in environment.bat to find locale files
@@ -85,7 +86,7 @@ component "leatherman" do |pkg, settings, platform|
         -DCMAKE_INSTALL_RPATH=#{settings[:libdir]} \
         #{leatherman_locale_var} \
         -DLEATHERMAN_SHARED=TRUE \
-        -DBOOST_INCLUDEDIR=#{settings[:libdir]} \
+        -DBOOST_ROOT=#{settings[:prefix]} \
         #{special_flags} \
         -DBoost_DEBUG=ON -DBoost_DETAILED_FAILURE_MESSAGE=ON \
         ."]
