@@ -3,6 +3,10 @@ Beaker::DSL::Helpers::RakeHelpers.load_tasks
 
 DEFAULT_INTERNAL_DOWNLOAD_URL = "http://builds.delivery.puppetlabs.net"
 DEFAULT_NIGHTLIES_DOWNLOAD_URL = "http://nightlies.puppet.com"
+# By default, tell beaker-puppet's agent install helpers to use AIX 6.1
+# packages on AIX 7.1 and 7.2, too (we don't build separate packages for these
+# anymore, but still do for older agent versions)
+DEFAULT_BEAKER_PACKAGING_PLATFORMS = "aix-7.1-power=aix-6.1-power,aix-7.2-power=aix-6.1-power"
 
 
 def set_environment_variables_for_install(install_released_packages)
@@ -11,6 +15,8 @@ def set_environment_variables_for_install(install_released_packages)
   end
 
   ENV['AGENT_DOWNLOAD_URL'] ||= DEFAULT_INTERNAL_DOWNLOAD_URL
+
+  ENV['BEAKER_PACKAGING_PLATFORMS'] ||= DEFAULT_BEAKER_PACKAGING_PLATFORMS
 
   # If this is a test of public / final release packages,
   # TESTING_RELEASED_PACKAGES is a string value we use to tell the
@@ -74,12 +80,15 @@ namespace :acceptance do
   EOS
   task :released do
     set_environment_variables_for_install(true)
-    Rake.invoke_task('ci:test:aio')
+    Rake::Task['ci:test:aio'].invoke
   end
 
   desc <<-EOS
   Run acceptance tests against development unreleased packages from testing repos with Beaker
   #{USAGE}
   EOS
-  task :development => 'ci:test:aio'
+  task :development do
+    set_environment_variables_for_install(false)
+    Rake::Task['ci:test:aio'].invoke
+  end
 end
