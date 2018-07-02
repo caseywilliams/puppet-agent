@@ -60,6 +60,8 @@ component "leatherman" do |pkg, settings, platform|
     cmake = "\"C:/Program Files/CMake/bin/cmake.exe\" -G \"MinGW Makefiles\""
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:tools_root]}/pl-build-toolchain.cmake"
 
+    # pkg.add_source "file://resources/files/windows/FindBoost.cmake", sum: "a6699f00becf2b759003ac47f391cfd7"
+
     # Use environment variable set in environment.bat to find locale files
     leatherman_locale_var = "-DLEATHERMAN_LOCALE_VAR='PUPPET_DIR' -DLEATHERMAN_LOCALE_INSTALL='share/locale'"
   else
@@ -77,7 +79,9 @@ component "leatherman" do |pkg, settings, platform|
   end
 
   pkg.configure do
-    ["#{cmake} \
+    [
+        "echo \"SET(CMAKE_CXX_COMPILER_ARCHITECTURE_ID X86 CACHE STRING \"Explicitly set architecture ID for FindBoost.cmake\")\" >> #{settings[:tools_root]}/pl-build-toolchain.cmake",
+        "#{cmake} \
         #{toolchain} \
         -DLEATHERMAN_GETTEXT=ON \
         -DCMAKE_VERBOSE_MAKEFILE=ON \
@@ -85,7 +89,7 @@ component "leatherman" do |pkg, settings, platform|
         -DCMAKE_INSTALL_PREFIX=#{settings[:prefix]} \
         -DCMAKE_INSTALL_RPATH=#{settings[:libdir]} \
         #{leatherman_locale_var} \
-        -DLEATHERMAN_SHARED=TRUE \
+        -DLEATHERMAN_SHARED=FALSE \
         -DBOOST_ROOT=#{settings[:prefix]} \
         #{special_flags} \
         -DBoost_DEBUG=ON -DBoost_DETAILED_FAILURE_MESSAGE=ON \
