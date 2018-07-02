@@ -57,7 +57,7 @@ component "leatherman" do |pkg, settings, platform|
     pkg.environment "CYGWIN", settings[:cygwin]
 
     # cmake = "C:/ProgramData/chocolatey/bin/cmake.exe -G \"MinGW Makefiles\""
-    cmake = "\"C:/Program Files/CMake/bin/cmake.exe\" -G \"MinGW Makefiles\""
+    cmake = "\"C:/Program Files/CMake/bin/cmake.exe\" -G \"MinGW Makefiles\" -DCMAKE_CXX_COMPILER_ARCHITECTURE_ID:STRING=X86 "
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:tools_root]}/pl-build-toolchain.cmake"
 
     # Use environment variable set in environment.bat to find locale files
@@ -85,7 +85,7 @@ component "leatherman" do |pkg, settings, platform|
         -DCMAKE_INSTALL_PREFIX=#{settings[:prefix]} \
         -DCMAKE_INSTALL_RPATH=#{settings[:libdir]} \
         #{leatherman_locale_var} \
-        -DLEATHERMAN_SHARED=TRUE \
+        -DLEATHERMAN_SHARED=FALSE \
         -DBOOST_ROOT=#{settings[:prefix]} \
         #{special_flags} \
         -DBoost_DEBUG=ON -DBoost_DETAILED_FAILURE_MESSAGE=ON \
