@@ -39,6 +39,7 @@ component "leatherman" do |pkg, settings, platform|
     # Since boost 1.66, libraries are named differently (using the "versioned"
     # layout for Windows by default; Other platforms use "system"). Use an
     # updated FindBoost.cmake to discover these names successfully
+    pkg.add_source "file://resources/files/windows/FindBoost.cmake", sum: "a6699f00becf2b759003ac47f391cfd7"
     pkg.configure { "/usr/bin/cp ../FindBoost.cmake C:/ProgramData/chocolatey/lib/CMake/share/cmake-3.5/Modules/FindBoost.cmake" }
   end
 
