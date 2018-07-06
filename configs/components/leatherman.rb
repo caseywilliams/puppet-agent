@@ -21,7 +21,6 @@ component "leatherman" do |pkg, settings, platform|
   elsif platform.is_windows?
     pkg.build_requires "cmake"
     pkg.build_requires "pl-toolchain-#{platform.architecture}"
-    pkg.build_requires "pl-boost-#{platform.architecture}"
     pkg.build_requires "pl-gettext-#{platform.architecture}"
   else
     pkg.build_requires "pl-cmake"
@@ -29,7 +28,7 @@ component "leatherman" do |pkg, settings, platform|
     pkg.build_requires "pl-gettext"
   end
 
-  pkg.build_requires "puppet-runtime" # Provides curl and ruby
+  pkg.build_requires "puppet-runtime" # Provides curl, boost, and ruby
   pkg.build_requires "runtime"
 
   ruby = "#{settings[:host_ruby]} -rrbconfig"
