@@ -21,8 +21,8 @@ component "leatherman" do |pkg, settings, platform|
   elsif platform.is_windows?
     pkg.build_requires "cmake"
     pkg.build_requires "pl-toolchain-#{platform.architecture}"
+    pkg.build_requires "pl-boost-#{platform.architecture}"
     pkg.build_requires "pl-gettext-#{platform.architecture}"
-    pkg.add_source "file://resources/files/windows/FindBoost.cmake", sum: "a6699f00becf2b759003ac47f391cfd7"
   else
     pkg.build_requires "pl-cmake"
     pkg.build_requires "pl-boost"
@@ -62,10 +62,8 @@ component "leatherman" do |pkg, settings, platform|
     pkg.environment "CYGWIN", settings[:cygwin]
 
     cmake = "C:/ProgramData/chocolatey/bin/cmake.exe -G \"MinGW Makefiles\""
-    # cmake = "\"C:/Program Files/CMake/bin/cmake.exe\" -G \"MinGW Makefiles\" "
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:tools_root]}/pl-build-toolchain.cmake"
 
-    #special_flags = "-DCMAKE_CXX_COMPILER_ARCHITECTURE_ID:STRING=x64 -DBoost_ADDITIONAL_VERSIONS=1.67.0 -DBoost_NO_SYSTEM_PATHS=ON"
     # Use environment variable set in environment.bat to find locale files
     leatherman_locale_var = "-DLEATHERMAN_LOCALE_VAR='PUPPET_DIR' -DLEATHERMAN_LOCALE_INSTALL='share/locale'"
   else
@@ -80,13 +78,6 @@ component "leatherman" do |pkg, settings, platform|
   if platform.is_linux?
     # Ensure our gettext packages are found before system versions
     pkg.environment "PATH", "/opt/pl-build-tools/bin:$(PATH)"
-  end
-
-  if platform.is_windows?
-    # Use newer FindBoost.cmake so that the cmake can find the default (since
-    # 1.66) "versioned" layout on Windows (other platforms have kept their
-    # previous "system" layout)
-    pkg.configure { "/usr/bin/cp ../FindBoost.cmake C:/ProgramData/chocolatey/lib/CMake/share/cmake-3.5/Modules/FindBoost.cmake" }
   end
 
   pkg.configure do

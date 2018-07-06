@@ -45,7 +45,6 @@ component "cpp-hocon" do |pkg, settings, platform|
         -DCMAKE_PREFIX_PATH=#{settings[:prefix]} \
         -DCMAKE_INSTALL_PREFIX=#{settings[:prefix]} \
         #{special_flags} \
-        -DBOOST_STATIC=ON \
         ."]
   end
 
