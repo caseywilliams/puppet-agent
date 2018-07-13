@@ -31,14 +31,6 @@ component "leatherman" do |pkg, settings, platform|
 
   leatherman_locale_var = ""
 
-  if platform.is_windows?
-    # Since boost 1.66, libraries are named differently (using the "versioned"
-    # layout for Windows by default; Other platforms use "system"). Use a
-    # newer, and patched, FindBoost.cmake to discover these names successfully
-    pkg.add_source "file://resources/files/windows/FindBoost.cmake", sum: "8432f7105f7d3caea390e52dd1f7cbe4"
-    pkg.configure { "/usr/bin/cp ../FindBoost.cmake C:/ProgramData/chocolatey/lib/CMake/share/cmake-3.5/Modules/FindBoost.cmake" }
-  end
-
   # cmake on OSX is provided by brew
   # a toolchain is not currently required for OSX since we're building with clang.
   if platform.is_macos?
