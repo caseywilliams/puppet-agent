@@ -238,6 +238,14 @@ component "facter" do |pkg, settings, platform|
       pkg.install_file "#{settings[:prefix]}/bin/#{dll}", "#{settings[:ruby_bindir]}/#{dll}"
       pkg.install_file "#{settings[:prefix]}/bin/#{dll}", "#{settings[:facter_root]}/bin/#{dll}"
     end
+
+    # Copy the boost dlls required by facter into the ruby and facter bindirs, so that the dynamically linked executables can find them
+    ["chrono", "date_time", "filesystem", "locale", "log", "log_setup", "program_options", "regex", "system", "thread"].each do |name|
+      pkg.install_file "#{settings[:prefix]}/lib/libboost_#{name}.dll",   "#{settings[:ruby_bindir]}/libboost_#{name}.dll"
+      pkg.install_file "#{settings[:prefix]}/lib/libboost_#{name}.dll.a", "#{settings[:ruby_bindir]}/libboost_#{name}.dll.a"
+      pkg.install_file "#{settings[:prefix]}/lib/libboost_#{name}.dll",   "#{settings[:facter_root]}/bin/libboost_#{name}.dll"
+      pkg.install_file "#{settings[:prefix]}/lib/libboost_#{name}.dll.a", "#{settings[:facter_root]}/bin/libboost_#{name}.dll.a"
+    end
   end
   if platform.is_windows?
     pkg.directory File.join(settings[:sysconfdir], 'facter', 'facts.d')
