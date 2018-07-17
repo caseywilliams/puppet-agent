@@ -35,7 +35,6 @@ component "cpp-pcp-client" do |pkg, settings, platform|
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=/opt/pl-build-tools/#{settings[:platform_triple]}/pl-build-toolchain.cmake"
   elsif platform.is_windows?
     make = "#{settings[:gcc_root]}/bin/mingw32-make"
-    pkg.environment "PATH", "$(shell cygpath -u #{settings[:prefix]}/lib):$(PATH)"
     pkg.environment "CYGWIN", settings[:cygwin]
 
     cmake = "C:/ProgramData/chocolatey/bin/cmake.exe -G \"MinGW Makefiles\""
