@@ -5,7 +5,6 @@ component "leatherman" do |pkg, settings, platform|
 
   if platform.is_macos?
     pkg.build_requires "cmake"
-    pkg.build_requires "boost"
     pkg.build_requires "gettext"
   elsif platform.name =~ /solaris-10/
     pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/solaris/10/pl-cmake-3.2.3-2.i386.pkg.gz"
@@ -75,6 +74,10 @@ component "leatherman" do |pkg, settings, platform|
     pkg.environment "PATH", "/opt/pl-build-tools/bin:$(PATH)"
   end
 
+  if platform.is_macos?
+    pkg.environment 'DYLD_FALLBACK_LIBRARY_PATH', settings[:libdir]
+  end
+
   pkg.configure do
     ["#{cmake} \
         #{toolchain} \
@@ -102,7 +105,7 @@ component "leatherman" do |pkg, settings, platform|
 
     pkg.check do
       ["LEATHERMAN_RUBY=#{settings[:libdir]}/$(shell #{ruby} -e 'print RbConfig::CONFIG[\"LIBRUBY_SO\"]') \
-       LD_LIBRARY_PATH=#{settings[:libdir]} LIBPATH=#{settings[:libdir]} #{test_locale} #{make} test ARGS=-V"]
+       DYLD_FALLBACK_LIBRARY_PATH=#{settings[:libdir]} LD_LIBRARY_PATH=#{settings[:libdir]} LIBPATH=#{settings[:libdir]} #{test_locale} #{make} test ARGS=-V"]
     end
   end
 

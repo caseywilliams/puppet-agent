@@ -5,7 +5,6 @@ component "facter-precompiled-gem" do |pkg, settings, platform|
 
   if platform.is_osx?
     pkg.build_requires "cmake"
-    pkg.build_requires "boost"
     pkg.build_requires "yaml-cpp"
   elsif platform.is_windows?
     pkg.build_requires "cmake"
