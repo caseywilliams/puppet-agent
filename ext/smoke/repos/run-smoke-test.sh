@@ -5,7 +5,7 @@ set -x
 
 source "$(dirname $0)/../helpers.sh"
 
-USAGE="USAGE: $0 <master-vm1> <master-vm2> <agent-vm1> <agent-vm2> <agent-version> <server-version> <puppetdb-version>"
+USAGE="USAGE: $0 <master-vm1> <master-vm2> <agent-vm1> <agent-vm2> <agent-version> <server-version> <puppetdb-version> [<collection-name>=puppet5]"
 domain=".delivery.puppetlabs.net"
 
 master_vm1="$1"
@@ -15,6 +15,7 @@ agent_vm2="$4"
 agent_version="$5"
 server_version="$6"
 puppetdb_version="$7"
+collection_name="$8"
 
 if [[ -z "${master_vm1}" || -z "${master_vm2}" || -z "${agent_vm1}" || \
       -z "${agent_vm2}" || -z "${agent_version}" || -z "${server_version}" || \
@@ -29,7 +30,7 @@ agent_vm1=$(hostname_with_domain $agent_vm1)
 agent_vm2=$(hostname_with_domain $agent_vm2)
 
 echo "##### Setting up masters..."
-$(dirname $0)/steps/setup-masters.sh ${master_vm1} ${master_vm2} ${agent_version} ${server_version} ${puppetdb_version}
+$(dirname $0)/steps/setup-masters.sh ${master_vm1} ${master_vm2} ${agent_version} ${server_version} ${puppetdb_version} ${collection_name}
 
 # One agent starts with master 1, one agent starts with master 2
 echo "##### Master 1 (PuppetDB Module) [$master_vm1] + Agent 1 [$agent_vm1]"
